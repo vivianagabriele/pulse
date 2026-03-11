@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Space+Grotesk:wght@700;900&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0a0a0f;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* Animations */
+@keyframes blink { 
+  0%,100%{opacity:1} 
+  50%{opacity:0} 
+}
+
+@keyframes spin { 
+  from{transform:rotate(0deg)} 
+  to{transform:rotate(360deg)} 
+}
+
+@keyframes fadeUp { 
+  from{
+    opacity:0;
+    transform:translateY(20px)
+  } 
+  to{
+    opacity:1;
+    transform:translateY(0)
+  } 
+}
+
+@keyframes toast { 
+  0%{
+    opacity:0;
+    transform:translateX(-50%) translateY(20px)
+  } 
+  20%{
+    opacity:1;
+    transform:translateX(-50%) translateY(0)
+  } 
+  80%{opacity:1} 
+  100%{
+    opacity:0;
+    transform:translateX(-50%) translateY(-10px)
+  } 
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { 
+  width: 4px; 
+}
+
+::-webkit-scrollbar-track { 
+  background: #0a0a0f; 
+}
+
+::-webkit-scrollbar-thumb { 
+  background: #333; 
+  border-radius: 4px; 
+}
+
+/* App container */
+.app {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+/* Background noise texture */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px;
+}
+
+/* Gradient blobs */
+.app::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FF3CAC22 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Second blob */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #3BF4FB18 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Cards container */
+.cards-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 12px 14px 40px;
+}
+
+/* Card hover effect */
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Share buttons hover */
+.share-btn:hover {
+  opacity: 1 !important;
+}
+
+/* Refresh button hover */
+.refresh-btn:hover {
+  transform: scale(1.03);
+}
+
+/* Error message */
+.error {
+  margin: 24px;
+  padding: 16px 20px;
+  background: rgba(255,60,172,0.1);
+  border: 1px solid rgba(255,60,172,0.3);
+  border-radius: 16px;
+  color: #FF3CAC;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Last updated */
+.last-updated {
+  text-align: center;
+  padding: 14px 16px 4px;
+  font-size: 12px;
+  color: #444;
+  letter-spacing: 0.05em;
+}
+
+.last-updated span {
+  color: #06D6A0;
+  margin-right: 6px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding-top: 16px;
+  font-size: 11px;
+  color: #333;
+  letter-spacing: 0.08em;
+}
