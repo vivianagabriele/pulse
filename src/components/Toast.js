@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 
 export default function Toast({ message, setMessage }) {
   useEffect(() => {
@@ -11,16 +11,7 @@ export default function Toast({ message, setMessage }) {
   if (!message) return null;
 
   return (
-    <div style={{
-      position: 'fixed', bottom: '24px', left: '50%',
-      transform: 'translateX(-50%)',
-      background: '#1a1a2e', border: '1px solid #333',
-      color: '#fff', padding: '12px 20px', borderRadius: '100px',
-      fontSize: '13px', fontWeight: '600', zIndex: 1000,
-      animation: 'toast 2.5s ease forwards',
-      whiteSpace: 'nowrap',
-      boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-    }}>
+    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-950/90 border border-white/10 text-white px-5 py-3 rounded-full text-sm font-semibold z-50 shadow-lg shadow-black/50 animate-[toast_2.5s_ease_forwards] whitespace-nowrap">
       {message}
     </div>
   );

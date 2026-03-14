@@ -1,211 +1,161 @@
-import React from 'react';
+﻿import React from 'react';
 import { formatAge } from '../utils/formatters';
 
-export default function Card({ 
-  category, trend, rank, isOpen, onToggle, 
-  likes, liked, onLike, onShare, onTweet 
+export default function Card({
+  category,
+  trend,
+  rank,
+  isOpen,
+  onToggle,
+  likeCount,
+  isLiked,
+  onLike,
+  onShare,
 }) {
   if (!trend) return null;
-  
+
   const isNew = trend.hoursOld < 2;
   const isRank1 = rank === 1;
 
+  const cardStyle = {
+    background: isOpen
+      ? `linear-gradient(135deg, ${category.color}15, rgba(255,255,255,0.06))`
+      : 'rgba(255,255,255,0.04)',
+    borderColor: isOpen ? `${category.color}55` : 'rgba(255,255,255,0.12)',
+  };
+
+  const badgeStyle = {
+    background: category.color,
+    color: '#000',
+  };
+
+  const borderGlow = {
+    background: `linear-gradient(90deg, transparent, ${category.color}, transparent)`,
+  };
+
+  const handleTweet = (e) => {
+    e.stopPropagation();
+
+    const cleanTitle = trend.title
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, '');
+
+    const categoryTags = {
+      movie: '#Movies #FilmTwitter',
+      music: '#Music #NowPlaying',
+      show: '#TV #Streaming',
+      news: '#News #BreakingNews',
+      policy: '#Politics #Policy',
+      viral: '#Viral #Trending',
+    };
+
+    const vibeOnly = trend.vibe.replace(/[^\w\s]/g, '').trim();
+
+    const hashtags = [
+      `#${cleanTitle}`,
+      categoryTags[category.id] || '#Trending',
+      `#${vibeOnly}`,
+      '#PulseApp',
+    ].join(' ');
+
+    const tweetText = `🔥 ${trend.title} is trending right now\n\n${hashtags}`;
+
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`,
+      '_blank'
+    );
+  };
+
   return (
     <div
-      className={`card ${isOpen ? 'open' : ''}`}
+      className="group relative rounded-2xl border p-5 mb-4 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-glow"
+      style={cardStyle}
       onClick={onToggle}
-      style={{
-        background: isOpen 
-          ? `linear-gradient(135deg, ${category.color}15, transparent)`
-          : 'rgba(255,255,255,0.03)',
-        border: isOpen
-          ? `1px solid ${category.color}55`
-          : '1px solid rgba(255,255,255,0.07)',
-        borderRadius: '20px',
-        padding: '18px',
-        marginBottom: '10px',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
     >
       {isRank1 && (
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: '2px',
-          background: `linear-gradient(90deg, transparent, ${category.color}, transparent)`,
-        }} />
+        <div className="absolute inset-x-0 top-0 h-1" style={borderGlow} />
       )}
 
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-        {/* Rank number */}
-        <div style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: isRank1 ? '36px' : '28px',
-          fontWeight: '900',
-          color: isRank1 ? category.color : '#2a2a3a',
-          lineHeight: 1,
-          minWidth: '32px',
-          marginTop: '2px',
-          letterSpacing: '-0.04em',
-          textShadow: isRank1 ? `0 0 20px ${category.color}88` : 'none',
-        }}>
+      <div className="flex items-start gap-4">
+        <div
+          className={`font-extrabold leading-none ${
+            isRank1 ? 'text-4xl' : 'text-3xl'
+          }`}
+          style={{
+            color: isRank1 ? category.color : '#94a3b8',
+            textShadow: isRank1 ? `0 0 18px ${category.color}88` : 'none',
+          }}
+        >
           {rank}
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          {/* Top row: badge + vibe + age */}
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px', 
-            marginBottom: '8px', 
-            flexWrap: 'wrap' 
-          }}>
-            <span style={{
-              background: category.color,
-              color: '#000',
-              fontSize: '10px',
-              fontWeight: '900',
-              padding: '3px 10px',
-              borderRadius: '100px',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-            }}>
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span
+              className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
+              style={badgeStyle}
+            >
               {category.icon} {category.label}
             </span>
 
             {trend.vibe && (
-              <span style={{
-                fontSize: '11px', fontWeight: '700',
-                color: '#ffffff99',
-                background: 'rgba(255,255,255,0.06)',
-                padding: '3px 9px', borderRadius: '100px',
-              }}>
+              <span className="text-xs font-semibold text-white/70 bg-white/10 px-3 py-1 rounded-full">
                 {trend.vibe}
               </span>
             )}
 
-            <span style={{
-              fontSize: '11px', fontWeight: '600',
-              color: isNew ? '#06D6A0' : '#444',
-              display: 'flex', alignItems: 'center', gap: '4px',
-            }}>
-              {isNew && (
-                <span style={{
-                  width: '5px', height: '5px', borderRadius: '50%',
-                  background: '#06D6A0', display: 'inline-block',
-                  animation: 'blink 1s infinite',
-                }} />
-              )}
+            <span
+              className={`text-xs font-semibold flex items-center gap-1 ${
+                isNew ? 'text-emerald-300' : 'text-white/50'
+              }`}
+            >
+              {isNew && <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />}
               {formatAge(trend.hoursOld)}
             </span>
           </div>
 
-          {/* Title */}
-          <div style={{
-            fontSize: '17px', fontWeight: '800',
-            color: '#fff', lineHeight: 1.3,
-            letterSpacing: '-0.02em',
-            fontFamily: "'Space Grotesk', sans-serif",
-            marginBottom: '4px',
-          }}>
+          <div className="text-lg font-extrabold text-white leading-snug tracking-tight">
             {trend.title}
           </div>
 
-          {/* Expanded reason */}
           {isOpen && (
-            <div style={{
-              marginTop: '12px', fontSize: '14px',
-              color: '#aaa', lineHeight: 1.7,
-              paddingTop: '12px',
-              borderTop: `1px solid rgba(255,255,255,0.06)`,
-              animation: 'fadeUp 0.2s ease both',
-            }}>
+            <div className="mt-3 text-sm text-white/70 pt-3 border-t border-white/10 animate-[fadeUp_0.2s_ease_both]">
               {trend.reason}
             </div>
           )}
 
-          {/* Action buttons */}
-          <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* Like button */}
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <button
               onClick={onLike}
-              style={{
-                background: liked ? `${category.color}22` : 'rgba(255,255,255,0.05)',
-                border: `1px solid ${liked ? category.color + '88' : 'rgba(255,255,255,0.1)'}`,
-                color: liked ? category.color : '#666',
-                borderRadius: '100px',
-                padding: '5px 12px',
-                fontSize: '12px', fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex', alignItems: 'center', gap: '5px',
-                transition: 'all 0.15s',
-              }}
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition ${
+                isLiked
+                  ? 'bg-white/10 border border-white/20 text-pink-200'
+                  : 'bg-white/5 border border-white/10 text-white/70'
+              } hover:bg-white/10`}
             >
-              {liked ? '♥' : '♡'} {likes.toLocaleString()}
+              <span className="text-sm">❗</span>
+              {likeCount.toLocaleString()}
             </button>
 
-            {/* Copy button */}
             <button
-              className="share-btn"
               onClick={onShare}
-              style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: '#666',
-                borderRadius: '100px',
-                padding: '5px 12px',
-                fontSize: '12px', fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex', alignItems: 'center', gap: '5px',
-                transition: 'all 0.15s',
-                opacity: 0.8,
-              }}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold bg-white/5 border border-white/10 text-white/70 hover:bg-white/10"
             >
-              ⎘ copy
+              Copy
             </button>
 
-            {/* Tweet button */}
             <button
-              className="share-btn"
-              onClick={onTweet}
-              style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: '#666',
-                borderRadius: '100px',
-                padding: '5px 12px',
-                fontSize: '12px', fontWeight: '700',
-                cursor: 'pointer',
-                display: 'inline-flex', alignItems: 'center', gap: '5px',
-                transition: 'all 0.15s',
-                opacity: 0.8,
-              }}
+              onClick={handleTweet}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold bg-gradient-to-r from-blue-500 to-cyan-400 text-white hover:opacity-90"
             >
-              𝕏 tweet
+              Tweet
             </button>
           </div>
         </div>
 
-        {/* Talking count */}
-        <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: '22px', fontWeight: '900',
-            color: category.color, lineHeight: 1,
-            letterSpacing: '-0.03em',
-            textShadow: `0 0 16px ${category.color}66`,
-          }}>
-            {trend.talking}
-          </div>
-          <div style={{ 
-            fontSize: '10px', color: '#444', 
-            marginTop: '3px', letterSpacing: '0.05em', 
-            textTransform: 'uppercase' 
-          }}>
-            talking
-          </div>
+        <div className="text-right flex-shrink-0">
+          <div className="text-xs text-white/50 font-medium">People talking</div>
+          <div className="text-lg font-bold text-white">{trend.talking}</div>
         </div>
       </div>
     </div>
