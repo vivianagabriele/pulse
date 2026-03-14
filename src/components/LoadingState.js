@@ -1,42 +1,22 @@
-import React from 'react';
+﻿import React from 'react';
 import { LOADING_MSGS } from '../utils/constants';
 
 export default function LoadingState({ message, step }) {
   return (
-    <div style={{ textAlign: 'center', padding: '64px 24px' }}>
-      <div style={{
-        fontSize: '48px', marginBottom: '24px',
-        animation: 'spin 1.5s linear infinite',
-        display: 'inline-block',
-      }}>✦</div>
-      <div style={{ 
-        fontSize: '16px', fontWeight: '700', 
-        color: '#fff', marginBottom: '8px' 
-      }}>
-        {message}
-      </div>
-      <div style={{ 
-        display: 'flex', gap: '6px', 
-        justifyContent: 'center', marginTop: '20px' 
-      }}>
+    <div className="text-center px-6 py-16">
+      <div className="text-5xl mb-6 inline-block animate-spin">✦</div>
+      <div className="text-base font-bold text-white mb-2">{message}</div>
+      <div className="flex justify-center gap-2 mt-5">
         {LOADING_MSGS.map((_, i) => (
-          <div key={i} style={{
-            width: i <= step ? '24px' : '6px',
-            height: '6px',
-            borderRadius: '3px',
-            background: i <= step
-              ? 'linear-gradient(90deg, #FF3CAC, #FFBE0B)'
-              : '#222',
-            transition: 'all 0.4s ease',
-          }} />
+          <div
+            key={i}
+            className={`h-1 rounded-full transition-all duration-300 ${
+              i <= step ? 'w-6 bg-gradient-to-r from-pink-500 to-purple-500' : 'w-2 bg-white/10'
+            }`}
+          />
         ))}
       </div>
-      <div style={{ 
-        fontSize: '12px', color: '#444', 
-        marginTop: '16px' 
-      }}>
-        searching live web data…
-      </div>
+      <div className="text-xs text-white/50 mt-4">searching live web data…</div>
     </div>
   );
 }

@@ -1,52 +1,28 @@
-import React from 'react';
+﻿import React from 'react';
 
 export default function Header({ loading, onRefresh, lastUpdated }) {
   return (
-    <div style={{
-      position: 'sticky', top: 0, zIndex: 10,
-      backdropFilter: 'blur(20px)',
-      background: 'rgba(10,10,15,0.85)',
-      borderBottom: '1px solid rgba(255,255,255,0.06)',
-      padding: '14px 20px',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    }}>
+    <header className="sticky top-0 z-20 bg-slate-950/75 backdrop-blur-md border-b border-white/10 px-5 py-4 flex items-center justify-between">
       <div>
-        <div style={{
-          fontFamily: "'Space Grotesk', sans-serif",
-          fontSize: '24px', fontWeight: '900',
-          letterSpacing: '-0.04em',
-          background: 'linear-gradient(135deg, #FF3CAC, #FFBE0B, #3BF4FB)',
-          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-        }}>
+        <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-orange-400 to-cyan-300 bg-clip-text text-transparent">
           Pulse
-        </div>
-        <div style={{ 
-          fontSize: '11px', color: '#555', 
-          marginTop: '1px', letterSpacing: '0.03em' 
-        }}>
-          NO ADS · NO ALGORITHM · JUST WHAT'S HAPPENING
+        </h1>
+        <div className="text-xs text-white/60 mt-0.5 tracking-widest">
+          NO ADS · NO ALGORITHM · JUST WHAT&apos;S HAPPENING
         </div>
       </div>
 
       <button
-        className="refresh-btn"
         onClick={onRefresh}
         disabled={loading}
-        style={{
-          background: loading ? '#1a1a2e' : 'linear-gradient(135deg, #FF3CAC, #C77DFF)',
-          color: loading ? '#444' : '#fff',
-          border: 'none',
-          borderRadius: '100px',
-          padding: '10px 18px',
-          fontSize: '13px',
-          fontWeight: '700',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          transition: 'transform 0.15s',
-          letterSpacing: '0.01em',
-        }}
+        className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
+          loading
+            ? 'bg-white/10 text-white/40 cursor-not-allowed'
+            : 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-sm hover:shadow-glow'
+        }`}
       >
         {loading ? 'loading…' : '↻ refresh'}
       </button>
-    </div>
+    </header>
   );
 }
