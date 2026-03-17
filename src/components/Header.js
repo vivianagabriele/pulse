@@ -1,28 +1,86 @@
 ﻿import React from 'react';
+import LocationToggle from './LocationToggle';
 
-export default function Header({ loading, onRefresh, lastUpdated }) {
+export default function Header({ 
+  loading, onRefresh, lastUpdated, 
+  locationMode, onLocationModeChange, 
+  location, onOpenCityPicker, isUsingCache
+}) {
   return (
-    <header className="sticky top-0 z-20 bg-slate-950/75 backdrop-blur-md border-b border-white/10 px-5 py-4 flex items-center justify-between">
-      <div>
-        <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-pink-400 via-orange-400 to-cyan-300 bg-clip-text text-transparent">
-          Pulse
-        </h1>
-        <div className="text-xs text-white/60 mt-0.5 tracking-widest">
-          NO ADS · NO ALGORITHM · JUST WHAT&apos;S HAPPENING
+    <div style={{
+      position: 'sticky', top: 0, zIndex: 10,
+      backdropFilter: 'blur(20px)',
+      background: 'rgba(10,10,15,0.85)',
+      borderBottom: '1px solid rgba(255,255,255,0.06)',
+      padding: '14px 20px',
+    }}>
+      <div style={{
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        marginBottom: '12px',
+      }}>
+        <div>
+          <div style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: '24px', fontWeight: '900',
+            letterSpacing: '-0.04em',
+            background: 'linear-gradient(135deg, #FF3CAC, #FFBE0B, #3BF4FB)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          }}>
+            Pulse
+          </div>
+          <div style={{ 
+            fontSize: '11px', color: '#555', 
+            marginTop: '1px', letterSpacing: '0.03em' 
+          }}>
+            NO ADS · NO ALGORITHM · JUST WHAT'S HAPPENING
+          </div>
         </div>
-      </div>
 
-      <button
-        onClick={onRefresh}
-        disabled={loading}
-        className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
-          loading
-            ? 'bg-white/10 text-white/40 cursor-not-allowed'
-            : 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-sm hover:shadow-glow'
-        }`}
-      >
-        {loading ? 'loading…' : '↻ refresh'}
-      </button>
-    </header>
+        <button
+          className="refresh-btn"
+          onClick={onRefresh}
+          disabled={loading}
+          style={{
+            background: loading ? '#1a1a2e' : 'linear-gradient(135deg, #FF3CAC, #C77DFF)',
+            color: loading ? '#444' : '#fff',
+            border: 'none',
+            borderRadius: '100px',
+            padding: '10px 18px',
+            fontSize: '13px',
+            fontWeight: '700',
+            cursor: loading ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {loading ? 'loading…' : '↻ refresh'}
+        </button>
+      </div>
+      
+      {/* Location Toggle */}
+      <LocationToggle
+        mode={locationMode}
+        onToggle={onLocationModeChange}
+        location={location}
+        onOpenCityPicker={onOpenCityPicker}
+      />
+      
+      {lastUpdated && (
+        <div style={{ 
+          marginTop: '10px',
+          fontSize: '11px', 
+          color: '#444',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}>
+          <span style={{ color: isUsingCache ? '#888' : '#06D6A0', fontSize: '8px' }}>
+            {isUsingCache ? '○' : '●'}
+          </span>
+          last updated {lastUpdated.toLocaleTimeString()}
+          {isUsingCache && <span style={{ color: '#666', fontSize: '9px' }}>(cached)</span>}
+        </div>
+      )}
+    </div>
   );
 }

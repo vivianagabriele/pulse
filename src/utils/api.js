@@ -6,7 +6,14 @@ const ai = new GoogleGenAI({
   apiKey: process.env.REACT_APP_GEMINI_KEY 
 });
 
-export const fetchTrends = async (setLoadingMsg, setLoadingStep, LOADING_MSGS) => {
+export const fetchTrends = async (
+  setLoadingMsg, 
+  setLoadingStep, 
+  LOADING_MSGS,
+  locationMode,
+  userLocation
+) => {
+  console.log('🔍 fetchTrends called with:', { locationMode, userLocation });
   let interval = setInterval(() => {
     setLoadingStep(step => {
       const next = step + 1;
@@ -33,9 +40,36 @@ export const fetchTrends = async (setLoadingMsg, setLoadingStep, LOADING_MSGS) =
         console.log(`🔄 Using model: ${modelName}`);
         setLoadingMsg(`Analyzing trends...`);
 
+        // Build location-aware prompt
+        let locationPrompt = '';
+        if (locationMode === 'local' && userLocation?.city) {
+          locationPrompt = `
+IMPORTANT: Find trends SPECIFIC TO ${userLocation.city}, ${userLocation.country || 'your region'}.
+
+Search for:
+- Local news headlines from ${userLocation.city}
+- Events happening in ${userLocation.city} right now
+- Social media trends specific to this area
+- Local entertainment (music, movies, shows popular here)
+- Regional viral moments
+
+The trends MUST be about ${userLocation.city} or specifically relevant to people there.
+`;
+        } else {
+          locationPrompt = 'Find GLOBAL trends from around the world.';
+        }
+
+        console.log('📍 Location prompt:', locationPrompt);
+
+        const fullPrompt = SYSTEM_PROMPT + 
+          `\n\nCurrent date/time: ${new Date().toString()}` +
+          `\n\n${locationPrompt}`;
+
+        console.log('🤖 Full prompt being sent to AI:', fullPrompt);
+
         const response = await ai.models.generateContent({
           model: modelName,
-          contents: SYSTEM_PROMPT + "\n\nCurrent date/time: " + new Date().toString(),
+          contents: fullPrompt,
           config: {
             tools: [{ googleSearch: {} }],
             temperature: 0.2,
@@ -51,7 +85,8 @@ export const fetchTrends = async (setLoadingMsg, setLoadingStep, LOADING_MSGS) =
         }
 
         console.log(`✅ Got response, length: ${text.length}`);
-        
+        console.log('📄 AI Response:', text.substring(0, 500) + '...');
+
         // Clean and parse JSON
         let cleanedText = text
           .replace(/```json\n?|\n?```/g, '')
@@ -67,6 +102,7 @@ export const fetchTrends = async (setLoadingMsg, setLoadingStep, LOADING_MSGS) =
         let parsed;
         try {
           parsed = JSON.parse(jsonMatch[0]);
+          console.log('🎯 Parsed trends data:', parsed);
         } catch (parseError) {
           const fixed = jsonMatch[0]
             .replace(/,(\s*[}\]])/g, '$1')
