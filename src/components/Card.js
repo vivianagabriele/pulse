@@ -11,6 +11,8 @@ export default function Card({
   isLiked,
   onLike,
   onShare,
+  locationMode,
+  location,
 }) {
   if (!trend) return null;
 
@@ -112,6 +114,19 @@ export default function Card({
               {isNew && <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />}
               {formatAge(trend.hoursOld)}
             </span>
+
+            {locationMode === 'local' && location?.city && (
+              <span style={{
+                fontSize: '11px',
+                color: '#06D6A0',
+                marginLeft: '8px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '2px',
+              }}>
+                📍 {location.city}
+              </span>
+            )}
           </div>
 
           <div className="text-lg font-extrabold text-white leading-snug tracking-tight">
