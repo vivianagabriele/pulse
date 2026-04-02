@@ -4,21 +4,21 @@ export default function LocationToggle({ mode, onToggle, location, onOpenCityPic
       display: 'flex',
       alignItems: 'center',
       gap: '8px',
-      background: 'rgba(255,255,255,0.03)',
-      borderRadius: '100px',
-      padding: '4px',
-      border: '1px solid rgba(255,255,255,0.07)',
+      background: '#F8FAFC',
+      borderRadius: '12px',
+      padding: '5px',
+      border: '1px solid #CBD5E1',
     }}>
       <button
         onClick={() => onToggle('global')}
         style={{
-          background: mode === 'global' ? 'rgba(255,255,255,0.1)' : 'transparent',
-          color: mode === 'global' ? '#fff' : '#666',
-          border: 'none',
-          borderRadius: '100px',
-          padding: '6px 12px',
+          background: mode === 'global' ? '#2563EB' : 'transparent',
+          color: mode === 'global' ? '#FFF' : '#475569',
+          border: mode === 'global' ? '1px solid #2563EB' : '1px solid transparent',
+          borderRadius: '999px',
+          padding: '7px 14px',
           fontSize: '12px',
-          fontWeight: '600',
+          fontWeight: '700',
           cursor: 'pointer',
           transition: 'all 0.2s',
         }}
@@ -29,13 +29,13 @@ export default function LocationToggle({ mode, onToggle, location, onOpenCityPic
       <button
         onClick={() => onToggle('local')}
         style={{
-          background: mode === 'local' ? 'rgba(6,214,160,0.2)' : 'transparent',
-          color: mode === 'local' ? '#06D6A0' : '#666',
-          border: mode === 'local' ? '1px solid #06D6A088' : 'none',
-          borderRadius: '100px',
-          padding: '6px 12px',
+          background: mode === 'local' ? '#FFFFFF' : 'transparent',
+          color: mode === 'local' ? '#0f172a' : '#475569',
+          border: mode === 'local' ? '1px solid #94A3B8' : '1px solid transparent',
+          borderRadius: '999px',
+          padding: '7px 14px',
           fontSize: '12px',
-          fontWeight: '600',
+          fontWeight: '700',
           cursor: 'pointer',
           transition: 'all 0.2s',
           display: 'flex',
@@ -61,12 +61,13 @@ export default function LocationToggle({ mode, onToggle, location, onOpenCityPic
         <button
           onClick={onOpenCityPicker}
           style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#888',
+            background: '#E2E8F0',
+            border: '1px solid #CBD5E1',
+            color: '#1e293b',
             fontSize: '14px',
             cursor: 'pointer',
-            padding: '4px',
+            padding: '5px 8px',
+            borderRadius: '8px',
           }}
         >
           ✎

@@ -21,14 +21,15 @@ export default function Card({
 
   const cardStyle = {
     background: isOpen
-      ? `linear-gradient(135deg, ${category.color}15, rgba(255,255,255,0.06))`
-      : 'rgba(255,255,255,0.04)',
-    borderColor: isOpen ? `${category.color}55` : 'rgba(255,255,255,0.12)',
+      ? 'linear-gradient(180deg, #FFFFFF, #F8FAFC)'
+      : '#FFFFFF',
+    border: `1px solid ${isOpen ? '#CBD5E1' : '#E2E8F0'}`,
+    boxShadow: isOpen ? '0 10px 20px rgba(15, 23, 42, 0.08)' : '0 4px 10px rgba(15, 23, 42, 0.04)',
   };
 
   const badgeStyle = {
     background: category.color,
-    color: '#000',
+    color: '#ffffff',
   };
 
   const borderGlow = {
@@ -101,14 +102,14 @@ export default function Card({
             </span>
 
             {trend.vibe && (
-              <span className="text-xs font-semibold text-white/70 bg-white/10 px-3 py-1 rounded-full">
+              <span className="text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1 rounded-full">
                 {trend.vibe}
               </span>
             )}
 
             <span
               className={`text-xs font-semibold flex items-center gap-1 ${
-                isNew ? 'text-emerald-300' : 'text-white/50'
+                isNew ? 'text-emerald-300' : 'text-slate-500'
               }`}
             >
               {isNew && <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />}
@@ -129,12 +130,12 @@ export default function Card({
             )}
           </div>
 
-          <div className="text-lg font-extrabold text-white leading-snug tracking-tight">
+<div className="text-lg font-extrabold text-slate-900 leading-snug tracking-tight">
             {trend.title}
           </div>
 
           {isOpen && (
-            <div className="mt-3 text-sm text-white/70 pt-3 border-t border-white/10 animate-[fadeUp_0.2s_ease_both]">
+            <div className="mt-3 text-sm text-slate-600 pt-3 border-t border-slate-100 animate-[fadeUp_0.2s_ease_both]">
               {trend.reason}
             </div>
           )}
@@ -144,9 +145,9 @@ export default function Card({
               onClick={onLike}
               className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition ${
                 isLiked
-                  ? 'bg-white/10 border border-white/20 text-pink-200'
-                  : 'bg-white/5 border border-white/10 text-white/70'
-              } hover:bg-white/10`}
+                  ? 'bg-indigo-100 border border-indigo-200 text-indigo-700'
+                  : 'bg-slate-100 border border-slate-200 text-slate-700'
+              } hover:bg-slate-200`}
             >
               <span className="text-sm">❗</span>
               {likeCount.toLocaleString()}
@@ -154,7 +155,7 @@ export default function Card({
 
             <button
               onClick={onShare}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold bg-white/5 border border-white/10 text-white/70 hover:bg-white/10"
+              className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200"
             >
               Copy
             </button>
@@ -169,8 +170,8 @@ export default function Card({
         </div>
 
         <div className="text-right flex-shrink-0">
-          <div className="text-xs text-white/50 font-medium">People talking</div>
-          <div className="text-lg font-bold text-white">{trend.talking}</div>
+          <div className="text-xs text-slate-500 font-medium">People talking</div>
+          <div className="text-lg font-bold text-slate-900">{trend.talking}</div>
         </div>
       </div>
     </div>

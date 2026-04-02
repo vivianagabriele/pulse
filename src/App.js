@@ -4,7 +4,6 @@ import { parseCount } from "./utils/formatters";
 import { fetchTrends } from "./utils/api";
 import Card from "./components/Card";
 import Header from "./components/Header";
-import LoadingState from "./components/LoadingState";
 import Toast from "./components/Toast";
 import { detectUserLocation, loadUserCity, saveUserCity } from './utils/location';
 import CityPicker from './components/CityPicker';
@@ -38,7 +37,14 @@ const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
 
 // Track if current data is from cache
 const [isUsingCache, setIsUsingCache] = useState(false);
-
+  const TOP_MARKETS = [
+    { label: 'France', city: 'Paris', country: 'France' },
+    { label: 'Italy', city: 'Rome', country: 'Italy' },
+    { label: 'Iran', city: 'Tehran', country: 'Iran' },
+    { label: 'China', city: 'Shanghai', country: 'China' },
+    { label: 'Korea', city: 'Seoul', country: 'South Korea' },
+    { label: 'USA', city: 'New York', country: 'USA' },
+  ];
   // Load likes from localStorage on startup
   useEffect(() => {
     // Reset all counts on app start for fresh experience
@@ -208,6 +214,16 @@ const [isUsingCache, setIsUsingCache] = useState(false);
     handleFetchTrends(false, 'local', cityData);
   };
 
+  const handleMarketSelect = async (market) => {
+    const cityData = { city: market.city, country: market.country };
+    setLocation(cityData);
+    setLocationMode('local');
+    setLoading(true);
+    setLoadingMsg(`🌎 Fetching ${market.label} trends...`);
+    setLoadingStep(0);
+    await handleFetchTrends(false, 'local', cityData);
+  };
+
   useEffect(() => {
     handleFetchTrends();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -232,8 +248,65 @@ const [isUsingCache, setIsUsingCache] = useState(false);
         onOpenCityPicker={() => setShowCityPicker(true)}
         isUsingCache={isUsingCache}
       />
-      
-      {loading && <LoadingState message={loadingMsg} step={loadingStep} />}
+
+      <div style={{
+        maxWidth: '760px',
+        margin: '16px auto',
+        padding: '0 16px',
+      }}>
+        <div style={{
+          borderRadius: '14px',
+          background: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          padding: '12px 14px',
+          boxShadow: '0 8px 24px rgba(15, 23, 42, 0.07)',
+          marginBottom: '16px',
+          color: '#334155'
+        }}>
+          <strong>Counter-censorship mode:</strong> Global trends from outside the US, in one place. Tap a key market to zoom into that country’s hottest stories.
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
+          {TOP_MARKETS.map((item) => (
+            <button
+              key={item.label}
+              onClick={() => handleMarketSelect(item)}
+              style={{
+                cursor: 'pointer',
+                border: '1px solid #CBD5E1',
+                background: '#F8FAFC',
+                color: '#0f172a',
+                borderRadius: '999px',
+                padding: '8px 12px',
+                fontWeight: '600',
+                boxShadow: '0 2px 6px rgba(15, 23, 42, 0.08)',
+              }}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {loading && (
+        <div style={{
+          maxWidth: '760px',
+          margin: '8px auto',
+          padding: '10px 14px',
+          borderRadius: '12px',
+          border: '1px solid #C2D3E8',
+          background: '#ffffff',
+          color: '#1e293b',
+          fontWeight: 600,
+          fontSize: '0.95rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 6px 14px rgba(15, 23, 42, 0.09)',
+        }}>
+          <span style={{ marginRight: '10px', animation: 'spin 0.9s linear infinite', display: 'inline-block' }}>⏳</span>
+          {loadingMsg || 'Loading trends...'}
+        </div>
+      )}
       
       {error && (
         <div className="error">
@@ -302,13 +375,14 @@ const [isUsingCache, setIsUsingCache] = useState(false);
           position: 'fixed',
           bottom: '20px',
           right: '20px',
-          background: '#1a1a2e',
-          border: '1px solid #333',
+          background: '#fff',
+          border: '1px solid #CBD5E1',
           padding: '12px 20px',
           borderRadius: '100px',
           fontSize: '13px',
-          color: '#fff',
+          color: '#0f172a',
           zIndex: 100,
+          boxShadow: '0 8px 20px rgba(15, 23, 42, 0.16)',
         }}>
           📍 Detecting your location...
         </div>

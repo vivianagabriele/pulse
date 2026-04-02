@@ -27,7 +27,9 @@ export const fetchTrends = async (
 
   // Only models that consistently work
   const models = [
-    "gemini-2.5-pro",      // ✅ Most reliable (always long responses)
+    "gemini-2.5-pro",         // ✅ Known supported (previous stable)
+    "gemini-3.0-mini",        // ⚡ Fallback (less expensive, still fast)
+    "gemini-3.5-pro",         // 🆕 Fallback if newer model is available
   ];
 
   try {

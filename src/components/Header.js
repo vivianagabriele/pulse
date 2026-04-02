@@ -9,10 +9,11 @@ export default function Header({
   return (
     <div style={{
       position: 'sticky', top: 0, zIndex: 10,
-      backdropFilter: 'blur(20px)',
-      background: 'rgba(10,10,15,0.85)',
-      borderBottom: '1px solid rgba(255,255,255,0.06)',
+      backdropFilter: 'blur(12px)',
+      background: 'rgba(255,255,255,0.92)',
+      borderBottom: '1px solid #E2E8F0',
       padding: '14px 20px',
+      boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08)',
     }}>
       <div style={{
         display: 'flex', 
@@ -25,16 +26,15 @@ export default function Header({
             fontFamily: "'Space Grotesk', sans-serif",
             fontSize: '24px', fontWeight: '900',
             letterSpacing: '-0.04em',
-            background: 'linear-gradient(135deg, #FF3CAC, #FFBE0B, #3BF4FB)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            color: '#1e293b',
           }}>
             Pulse
           </div>
           <div style={{ 
-            fontSize: '11px', color: '#555', 
-            marginTop: '1px', letterSpacing: '0.03em' 
+            fontSize: '12px', color: '#475569', 
+            marginTop: '2px', letterSpacing: '0.03em' 
           }}>
-            NO ADS · NO ALGORITHM · JUST WHAT'S HAPPENING
+            REAL-TIME GLOBAL TRENDS · UNSILENCED
           </div>
         </div>
 
@@ -43,8 +43,8 @@ export default function Header({
           onClick={onRefresh}
           disabled={loading}
           style={{
-            background: loading ? '#1a1a2e' : 'linear-gradient(135deg, #FF3CAC, #C77DFF)',
-            color: loading ? '#444' : '#fff',
+            background: loading ? '#e2e8f0' : '#2563eb',
+            color: loading ? '#94a3b8' : '#fff',
             border: 'none',
             borderRadius: '100px',
             padding: '10px 18px',

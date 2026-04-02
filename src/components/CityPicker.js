@@ -10,8 +10,8 @@ export default function CityPicker({ isOpen, onClose, onSelectCity }) {
       left: 0,
       right: 0,
       bottom: 0,
-      background: 'rgba(0,0,0,0.8)',
-      backdropFilter: 'blur(10px)',
+      background: 'rgba(15, 23, 42, 0.28)',
+      backdropFilter: 'blur(8px)',
       zIndex: 1000,
       display: 'flex',
       alignItems: 'center',
@@ -19,14 +19,15 @@ export default function CityPicker({ isOpen, onClose, onSelectCity }) {
       padding: '20px',
     }}>
       <div style={{
-        background: '#1a1a2e',
-        borderRadius: '24px',
+        background: '#fff',
+        borderRadius: '20px',
         padding: '24px',
-        maxWidth: '500px',
+        maxWidth: '520px',
         width: '100%',
         maxHeight: '80vh',
         overflow: 'auto',
-        border: '1px solid rgba(255,255,255,0.07)',
+        border: '1px solid #E2E8F0',
+        boxShadow: '0 16px 30px rgba(15, 23, 42, 0.12)',
       }}>
         <div style={{
           display: 'flex',
@@ -34,15 +35,15 @@ export default function CityPicker({ isOpen, onClose, onSelectCity }) {
           alignItems: 'center',
           marginBottom: '20px',
         }}>
-          <h3 style={{ color: '#fff', fontSize: '20px', fontWeight: '700' }}>
+          <h3 style={{ color: '#0f172a', fontSize: '20px', fontWeight: '700' }}>
             Choose Your City
           </h3>
           <button
             onClick={onClose}
             style={{
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: '#888',
+              background: '#F1F5F9',
+              border: '1px solid #CBD5E1',
+              color: '#475569',
               borderRadius: '50%',
               width: '32px',
               height: '32px',
@@ -59,10 +60,10 @@ export default function CityPicker({ isOpen, onClose, onSelectCity }) {
           style={{
             width: '100%',
             padding: '12px',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.1)',
+            background: '#F8FAFC',
+            border: '1px solid #CBD5E1',
             borderRadius: '12px',
-            color: '#fff',
+            color: '#0f172a',
             marginBottom: '16px',
           }}
         />
