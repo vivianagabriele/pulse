@@ -12,6 +12,7 @@ process.on('unhandledRejection', (reason, promise) => {
 const express = require('express');
 const cors = require('cors');
 const googleTrends = require('google-trends-api');
+require('dotenv').config();
 
 const app = express();
 const PORT = 3001;
@@ -22,6 +23,49 @@ app.use(express.json());
 // Add a health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Trends proxy is running' });
+});
+
+const BRAVE_SEARCH_API_URL = 'https://api.search.brave.com/res/v1/llm/context';
+const BRAVE_SEARCH_API_KEY = process.env.BRAVE_SEARCH_API_KEY || process.env.BRAVE_API_KEY;
+
+async function fetchBraveSearch(query) {
+  if (!BRAVE_SEARCH_API_KEY) {
+    throw new Error('Missing Brave Search API key. Set BRAVE_SEARCH_API_KEY in your backend environment.');
+  }
+
+  const url = `${BRAVE_SEARCH_API_URL}?q=${encodeURIComponent(query)}`;
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'application/json',
+      'X-Subscription-Token': BRAVE_SEARCH_API_KEY,
+    },
+  });
+
+  const payload = await response.json();
+  if (!response.ok) {
+    const errorText = payload?.error || payload?.message || response.statusText;
+    const error = new Error(`Brave Search API error ${response.status}: ${errorText}`);
+    error.status = response.status;
+    throw error;
+  }
+
+  return payload;
+}
+
+app.get('/api/search', async (req, res) => {
+  const query = req.query.q || req.query.query;
+  if (!query) {
+    return res.status(400).json({ error: 'Query parameter is required' });
+  }
+
+  console.log(`🔎 Brave Search query: "${query}"`);
+  try {
+    const data = await fetchBraveSearch(query);
+    res.json({ query, data });
+  } catch (error) {
+    console.error('❌ Brave Search failed:', error.message);
+    res.status(error.status || 500).json({ error: error.message });
+  }
 });
 
 // Endpoint to get trends data
